@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewpoint" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="The Driver Dashboard page page">
+        <meta name="author" content="Baraah Ali">
+
+        <title>Driver Dashboard</title>
+        <link rel="shortcut icon" href="img/favicon.ico">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&amp;display=swap" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="{{url_for('.static', filename='css/StuDash.css')}}">
+        <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-Q3ZYEKLQ68"></script>
+        <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+        <style>
+            table, th, td {
+                border: 1px solid black;
+                border-collapse: collapse;
+            }
+            th, td {
+                padding: 15px;
+                text-align: left;
+            }
+        </style>
+    </head>
+    <body>
+        <a href="{{ url_for('driver') }}"></a>
+        <div class="wrapper">
+            <!-- Side navagation-->
+            
+            <nav id="sidebar" class="sidebar collapsed">
+                <div class="sidebar-content js-simplebar simplebar-scrollable-y" data-simplebar="init">
+                    <div class="simplebar-wrapper" style="margin: 0px;">
+                        <div class="simplebar-height-auto-observer-wrapper">
+                            <div class="simplebar-height-auto-observer"></div>
+                        </div>
+                        <div class="simplebar-mask">
+                            <div class="simplebar-offset" style="right: 0px; bottom: 0px;">
+                                <div class="simplebar-content-wrapper" tabindex="0" role="region" aria-label="scrollable content" style="height: 100%; overflow: hidden scroll;">
+                                    <div class="simplebar-content" style="padding: 0px;">
+                                        <!-- ::before -->
+                                        <a class="sidebar-brand" href="/">
+                                            <!-- add unimap logo or bus-->
+                                             <span class="align-middle me-3">UniMAP Bus System : Driver</span>
+                                        </a>
+                                        <ul class="sidebar-nav">
+                                            <li class="sidebar-header">Navigation</li>
+                                            <li class="sidebar-item active">
+                                                <a data-bs-target="#dashboards" data-bs-toggle="collapse" class="sidebar-link">
+                                                    <!--::before-->
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="sliders" class="lucide lucide-sliders align-middle"><line x1="4" x2="4" y1="21" y2="14"></line><line x1="4" x2="4" y1="10" y2="3"></line><line x1="12" x2="12" y1="21" y2="12"></line><line x1="12" x2="12" y1="8" y2="3"></line><line x1="20" x2="20" y1="21" y2="16"></line><line x1="20" x2="20" y1="12" y2="3"></line><line x1="2" x2="6" y1="14" y2="14"></line><line x1="10" x2="14" y1="8" y2="8"></line><line x1="18" x2="22" y1="16" y2="16"></line></svg>
+                                                    <span class="align-middle">Dashboards</span>
+                                                    <span class="badge badge-sidebar-primary">1</span>
+                                                </a>
+                                                <ul id="dashboards" class="sidebar-dropdown list-unstyled collapse show" data-bs-parent="#sidebar">
+                                                    <li class="sidebar-item active">
+                                                        <a class="sidebar-link" href="/DriverDashboard.html">Main Page</a>
+                                                    </li>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                        <!--::after-->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="simplebar-placeholder" style="width: 260px; height: 1643px;"></div>
+                    </div>
+                    <div class="simplebar-teack simplebar-horizontal" style="visibility: hidden;">
+                        <div class="simplebar-scrollbar" style="width: 0px; display:none;"></div>
+                    </div>
+                    <div class="simplebar-track simplebar-vertical" style="visibility: visible;">
+                        <div class="simplebar-scrollbar" style="height: 275px; transform: translate3d(0px, 393px, 0px); display: block;">
+                            <!--::before-->
+                        </div>
+                    </div>
+                </div>
+            </nav>
+            <div class="main">
+                <!-- Top Navigation -->
+                 <nav class="navbar navbar-expand bavbar-bg">
+                    <a class="sidebar-toggle">
+                        <i class="hamburger align-self-center">
+                           <!-- ::before
+                            ::after -->
+                        </i>
+                    </a>
+                    <form class="d-none d-sm-inline-block">
+                        <div class="input-group input-group-navbar">
+                            <input type="text" class="form-control" placeholder="Search" aria-label="Search">
+                            <button class="btn" type="button">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="search" class="lucide lucide-search align-middle"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+                            </button>
+                        </div>
+                    </form>
+                    <div class="navbar-collapse collapse">
+                        <ul class="navbar-nav navbar-align">
+                            <li class="nav-item nav-theme-toggle dropdown">
+                                <a class="nav-icon js-theme-toggle" href="#">
+                                    <div class="position-relative">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="sun" class="lucide lucide-sun align-middle text-body nav-theme-toggle-light"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="moon" class="lucide lucide-moon align-middle text-body nav-theme-toggle-dark"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-flag gropdown-toggle" href="#" id="languageDropdown" data-bs-toggle="dropdown">
+                                    <img src="{{url_for('static', filename='/img/flags/us.png')}}" alt="English">
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown">
+                                    <a class="dropdown-item" href="#">
+                                        <img src="{{url_for('static', filename='/img/flags/us.png')}}" alt="English" width="20" class="align-middle me-1">
+                                        <span class="align-middle">English</span>
+                                    </a>
+                                    <a class="dropdown-item" href="#">
+                                        <img src="{{url_for('static', filename='/img/flags/es.png')}}" alt="Spanish" width="20" class="align-middle">
+                                        <span class="align-middle">Spanish</span>
+                                    </a>
+                                    <a class="dropdown-item" href="#">
+                                        <img src="{{url_for('static', filename='/img/flags/de.png')}}" alt="German" width="20" class="align-middle me-1">
+                                        <span class="align-middle">German</span>
+                                    </a>
+                                    <a  class="dropdown-item" href="#">
+                                        <img src="{{url_for('static', filename='/img/flags/my.png')}}" alt="Malay" width="20" class="align-middle me-1">
+                                        <span class="align-middle">Malay</span>
+                                    </a>
+                                </div>
+                            </li>
+                            <!-- Add Later //Notification and announcment?-->
+                            <li class="nav-item dropdown"></li>
+                        </ul>
+                    </div>
+                </nav>
+                <main class="content">
+                    <div class="container-fluid p-0">
+                        <div class="row">
+                            <!-- First box -->
+                            <div class="col-12 col-sm-6 col-xxl-3 d-flex">
+                                <div class="card illustration flex-fill">
+                                    <div class="card-body p-0 d-flex flex-fill">
+                                        <div class="row g-0 w-100">
+                                            <div class="col-6">
+                                                <div class="illustration-text p-3 m-1">
+                                                    <form method="POST" action="/get_on_service_info">
+                                                    <h4 class="illustration-text">Welcome Back, Driver!</h4>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <form id="infoForm" method="POST" action="/submit_info">
+        <!-- Second Section -->
+        <div class="col-12 col-sm-6 col-xxl-3 d-flex">
+            <div class="card flex-fill">
+                <div class="card-body py-4">
+                    <div class="d-flex align-items-start">
+                        <p id="driver_name"></p>
+                        <fieldset>
+                            <label for="driver_name">Choose Your Name:
+                                <select name="driver_name" id="driver_name">
+                                    <option>Select Your Name</option>
+                                    {% for driver in driver_names %}
+                                    <option value="{{ driver.first_name }}">{{ driver.first_name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </label>
+                        </fieldset>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Third Section -->
+        <div class="col-12 col-sm-6 col-xxl-3 d-flex">
+            <div class="card flex-fill">
+                <div class="card-body py-4">
+                    <div class="d-flex align-items-start">
+                        <p id="assigned_bus"></p>
+                        <fieldset>
+                            <label for="assigned_bus">Choose Bus Number:
+                                <select name="bus_number" id="assigned_bus">
+                                    <option>1</option>
+                                    {% for bus in bus_numbers %}
+                                    <option value="{{ bus.bus_number }}">{{ bus.bus_number }}</option>
+                                    {% endfor %}
+                                </select>
+                            </label>
+                        </fieldset>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Fourth Section -->
+        <div class="col-12 col-sm-6 col-xxl-3 d-flex">
+            <div class="card flex-fill">
+                <div class="card-body py-4">
+                    <div class="d-flex align-items-start">
+                        <p id="destination"></p>
+                        <fieldset>
+                            <label for="destination">Choose Destination:
+                                <select name="destination_name" id="destination">
+                                    <option>Select the Destination</option>
+                                    {% for destination in destinations %}
+                                    <option value="{{ destination.destination_name }}">{{ destination.destination_name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </label>
+                        </fieldset>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Location Access Section -->
+        <div class="col-12 col-sm-6 col-xxl-3 d-flex">
+            <div class="card flex-fill">
+                <div class="card-body py-4">
+                    <div class="d-flex align-items-start">
+                        <p>Click on the Button to Share your current Location: </p>
+                        <button type="button" onclick="getLocation()">Allow Access</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Display Current Location -->
+        <div class="col-12 col-sm-6 col-xxl-3 d-flex">
+            <div class="card flex-fill">
+                <div class="card-body py-4">
+                    <div class="d-flex align-items-start">
+                        <p>Your Current Location is :</p>
+                        <p id="demo"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hidden Inputs for Latitude and Longitude -->
+        <input type="hidden" id="latitude" name="latitude">
+        <input type="hidden" id="longitude" name="longitude">
+        
+        <!-- Submit Button -->
+        <button type="submit" onclick="sendLocation(event)" action="/submit_info">Submit</button>
+    </form>
+                            <!-- -->
+                            <div class="col-12 col-sm-6 col-xxl-3 d-flex">
+                                <div class="card flex-fill">
+                                    <div class="card-body py-4">
+                                        <div class="d-flex align-items-start">
+                                            <p>Click on the Button upon arrival: </p>
+                                            <button type="submit">Reached Destination</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </div>
+        <!-- Other Important functions -->
+        <script src="{{ url_for('static', filename='js/StuDash.js') }}"></script>
+        <div class="notyf"></div>
+        <div class="notyf-announcer" aria-atomic="true" aria-live="polite" style="border: 0px; clip: rect(0px, 0px, 0px, 0px); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; outline:0px;"></div>
+    </div>
+    <!-- Start the Java Scirpt Functions -->
+    <script>
+        const x = document.getElementById("demo");
+
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition);
+            } else {
+                x.innerHTML = "Geolocation is not supported by this browser.";
+            }
+        }
+
+        function showPosition(position) {
+            x.innerHTML = "<br>Latitude: " + position.coords.latitude + "<br>Longitude: " + position.coords.longitude;
+            document.getElementById('latitude').value = position.coords.latitude;
+            document.getElementById('longitude').value = position.coords.longitude;
+        }
+
+        function sendLocation(event) {
+            event.preventDefault();  // Prevent the form from submitting immediately
+            if (document.getElementById('latitude').value && document.getElementById('longitude').value) {
+                document.getElementById('infoForm').submit();  // Submit the form after ensuring the location values are set
+            } else {
+                alert('Please allow access to your location first.');
+            }
+        }
+    </script>
+ 
+    <script src = "http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+        <script>
+		// Workaround for theme switch re-initialization issue
+		    var isTempusDominusInitialized = false;
+		    document.addEventListener("DOMContentLoaded", function() {
+			    if (isTempusDominusInitialized) {
+				    return;
+			    }
+			    isTempusDominusInitialized = true;
+			    new tempusDominus.TempusDominus(document.getElementById('calendar-dashboard'), {
+				    display: {
+					    inline: true,
+					    components: {
+						    clock: false,
+						    hours: false,
+						    minutes: false
+					    }
+				    }
+			    });
+		    });
+        </script>
+        <script>
+
+		    document.addEventListener("DOMContentLoaded", function() {
+			    $("#datatables-dashboard-projects").DataTable({
+				    destroy: true,
+				    pageLength: 6,
+				    lengthChange: false,
+				    bFilter: false,
+				    autoWidth: false
+			    });
+		    });
+        </script>
+    <div class="settings js-settings">
+    
+
+    <div class="settings-panel">
+        <div class="settings-content">
+        <div class="settings-title d-flex align-items-center">
+            <button type="button" class="btn-close float-right js-settings-toggle" aria-label="Close"></button>
+
+            <h4 class="mb-0 ms-2 d-inline-block">Theme Builder</h4>
+        </div>
+
+        <div class="settings-body">
+
+            <div class="alert alert-primary" role="alert">
+            <div class="alert-message">
+                <strong>Hey there!</strong> Set your own customized style below. Choose the ones that best fits your needs.
+            </div>
+            </div>
+
+            <div class="mb-3">
+            <span class="d-block font-size-lg font-weight-bold">Color scheme</span>
+            <span class="d-block text-muted mb-2">The perfect color mode for your app.</span>
+
+            <div class="row g-0 text-center mx-n1 mb-2">
+                <div class="col">
+                <label class="mx-1 d-block mb-1">
+                    <input class="settings-scheme-label" type="radio" name="theme" value="default"/>
+                    <div class="settings-scheme">
+                        <div class="settings-scheme-theme settings-scheme-theme-default"></div>
+                    </div>
+                </label>
+                Default
+                </div>
+                <div class="col">
+                <label class="mx-1 d-block mb-1">
+                    <input class="settings-scheme-label" type="radio" name="theme" value="colored"/>
+                    <div class="settings-scheme">
+                      <div class="settings-scheme-theme settings-scheme-theme-colored"></div>
+                    </div>
+                </label>
+                Colored
+                </div>
+            </div>
+              <div class="row g-0 text-center mx-n1">
+                <div class="col">
+                  <label class="mx-1 d-block mb-1">
+                    <input class="settings-scheme-label" type="radio" name="theme" value="dark"/>
+                    <div class="settings-scheme">
+                        <div class="settings-scheme-theme settings-scheme-theme-dark"></div>
+                    </div>
+                    </label>
+                Dark
+                </div>
+                <div class="col">
+                    <label class="mx-1 d-block mb-1">
+                    <input class="settings-scheme-label" type="radio" name="theme" value="light"/>
+                    <div class="settings-scheme">
+                        <div class="settings-scheme-theme settings-scheme-theme-light"></div>
+                    </div>
+                    </label>
+                Light
+                </div>
+            </div>
+            </div>
+            <hr/>
+
+            <div class="mb-3">
+                <span class="d-block font-size-lg font-weight-bold">Sidebar position</span>
+                <span class="d-block text-muted mb-2">Toggle the position of the sidebar.</span>
+
+            <div>
+                <label>
+                <input class="settings-button-label" type="radio" name="sidebarPosition" value="left"/>
+                <div class="settings-button">
+                    Left
+                </div>
+                </label>
+                <label>
+                <input class="settings-button-label" type="radio" name="sidebarPosition" value="right"/>
+                <div class="settings-button">
+                    Right
+                </div>
+                </label>
+            </div>
+            </div>
+
+            <hr>
+
+            <div class="mb-3">
+                <span class="d-block font-size-lg font-weight-bold">Sidebar behavior</span>
+                <span class="d-block text-muted mb-2">Change the behavior of the sidebar.</span>
+
+                <div>
+                <label>
+                <input class="settings-button-label" type="radio" name="sidebarBehavior" value="sticky"/>
+                <div class="settings-button">
+                    Sticky
+                  </div>
+                </label>
+                <label>
+                <input class="settings-button-label" type="radio" name="sidebarBehavior" value="fixed"/>
+                <div class="settings-button">
+                    Fixed
+                </div>
+                </label>
+                <label>
+                <input class="settings-button-label" type="radio" name="sidebarBehavior" value="compact"/>
+                <div class="settings-button">
+                    Compact
+                  </div>
+                </label>
+            </div>
+            </div>
+
+            <hr>
+
+            <div class="mb-3">
+                <span class="d-block font-size-lg font-weight-bold">Layout</span>
+                <span class="d-block text-muted mb-2">Toggle container layout system.</span>
+
+                <div>
+                    <label>
+                      <input class="settings-button-label" type="radio" name="layout" value="fluid"/>
+                        <div class="settings-button">
+                        Fluid
+                          </div>
+                    </label>
+                    <label>
+                      <input class="settings-button-label" type="radio" name="layout" value="boxed"/>
+                    <div class="settings-button">
+                    Boxed
+                    </div>
+                    </label>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="settings-footer">
+            <div class="d-grid">
+            <a class="btn btn-primary btn-lg btn-block" href="https://themes.getbootstrap.com/product/appstack-responsive-admin-template/" target="_blank">Purchase</a>
+            </div>
+        </div>
+
+       </div>
+    </div>
+    </div>
+    <svg id="SvgjsSvg1001" width="2" height="0" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.dev" style="overflow: hidden; top: -100%; left: -100%; position: absolute; opacity: 0;"><defs id="SvgjsDefs1002"></defs><polyline id="SvgjsPolyline1003" points="0,0"></polyline><path id="SvgjsPath1004" d="M0 0 "></path></svg>
+    
+    </body>
+</html>
