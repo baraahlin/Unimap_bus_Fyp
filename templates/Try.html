@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewpoint" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="The Student dashboard page">
+        <meta name="author" content="Baraah Ali">
+
+        <title>Add Driver Dashboard</title>
+        <link rel="shortcut icon" href="img/favicon.ico">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&amp;display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="css/StuDash.css">
+        <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-Q3ZYEKLQ68"></script>
+        <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+        <style>
+            table, th, td {
+                border: 1px solid black;
+                border-collapse: collapse;
+            }
+            th, td {
+                padding: 15px;
+                text-align: left;
+            }
+        </style>
+    </head>
+    <body>
+        <!-- form.html -->
+<form method="POST" action="/submit">
+    <legend>Add New Driver Information</legend>
+    <label for="first_name">First Name:</label>
+    <input type="text" id="first_name" name="first_name" required><br>
+    <label for="last_name">Last Name:</label>
+    <input type="text" id="last_name" name="last_name" required><br>
+    <!--
+    <label for="id">Id:</label>
+    <input type="number" id="id" name="id" required><br>
+    -->
+    <label for="age">Age:</label>
+    <input type="number" id="age" name="age" required><br>
+    <button type="submit" value="Submit">Submit</button>
+</form>
+
+<!-- index.html -->
+<form method="POST" action="/Get">
+    <button type="submit" value="Get">Update Table</button>
+    <table>
+    <tr>
+        <th>ID</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Age</th>
+    </tr>
+    {% for profile in profiles %}
+    <tr>
+        <td>{{ profile.id }}</td>
+        <td>{{ profile.first_name }}</td>
+        <td>{{ profile.last_name }}</td>
+        <td>{{ profile.age }}</td>
+    </tr>
+    {% endfor %}
+</table>
+</form>
+
+
+    </body>
+</html>
